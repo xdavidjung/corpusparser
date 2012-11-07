@@ -1,0 +1,143 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>knowitall</groupId>
+  <artifactId>corpus-parser</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>corpus-parser</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>knowitall</id>
+      <url>http://knowitall.cs.washington.edu/maven2/</url>
+    </repository>
+    <repository>
+      <id>knowitall-snapshot</id>
+      <url>http://knowitall.cs.washington.edu/maven2-snapshot/</url>
+    </repository>
+    <repository>
+      <id>scala-tools.org</id>
+      <name>Scala-tools Maven2 Repository</name>
+      <url>http://scala-tools.org/repo-releases/</url>
+    </repository>
+    <repository>
+      <id>sonatype-snapshot</id>
+      <name>Scoobi-SNAPSHOT-repo</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+      <id>Cloudera Maven Repository</id>
+      <url>https://repository.cloudera.com/content/repositories/releases/</url>
+    </repository>
+    <repository>
+      <id>Packaged Avro</id>
+      <url>http://nicta.github.com/scoobi/releases/</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>scala-tools.org</id>
+      <name>Scala-tools Maven2 Repository</name>
+      <url>http://scala-tools.org/repo-releases</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <dependencies>
+    <!-- rob's hadoop project -->
+    <dependency>
+      <groupId>edu.washington.cs.knowitall</groupId>
+      <artifactId>browser-hadoop</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency> 
+    <!-- scoobi -->
+    <dependency>
+      <groupId>com.nicta</groupId>
+      <artifactId>scoobi_2.9.2</artifactId>
+      <version>0.4.0</version>
+    </dependency>
+    <!-- scala -->
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>2.9.2</version>
+    </dependency>
+    <!-- ollie -->
+    <dependency>
+      <groupId>edu.washington.cs.knowitall.ollie</groupId>
+      <artifactId>ollie-core_2.9.2</artifactId>
+      <version>1.0.0.RC4</version>
+    </dependency>
+    <!-- malt parser -->
+    <dependency>
+      <groupId>edu.washington.cs.knowitall.nlptools</groupId>
+      <artifactId>nlptools-parse-malt_2.9.2</artifactId>
+      <version>2.2.3</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>${basedir}/src/main/scala/edu/washington/cs/knowitall/corpusparser</sourceDirectory>
+    <resources>
+      <resource>
+        <targetPath>edu/washington/cs/knowitall/corpusparser</targetPath>
+        <filtering>false</filtering>
+        <directory>${basedir}/src/main/resources/edu/washington/cs/knowitall/corpusparser</directory>
+        <includes>
+          <include>engmalt.linear-1.7.mco</include>
+        </includes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>edu.washington.cs.knowitall.corpusparser.CorpusParserMain</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <lifecycleMappingMetadata>
+            <pluginExecutions>
+              <pluginExecution>
+                <pluginExecutionFilter>
+                  <groupId>net.alchim31.maven</groupId>
+                  <artifactId>scala-maven-plugin</artifactId>
+                  <versionRange>3.1.0</versionRange>
+                  <goals>
+                    <goal>compile</goal>
+                    <goal>testCompile</goal>
+                  </goals>
+                </pluginExecutionFilter>
+                <action>
+                  <execute>
+                    <runOnIncremental>false</runOnIncremental>
+                  </execute>
+                </action>
+              </pluginExecution>
+            </pluginExecutions>
+          </lifecycleMappingMetadata>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
