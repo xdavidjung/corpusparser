@@ -4,4 +4,4 @@ Quickstart:
 
   cd target
 
-  hadoop jar <jarfile> <inputfile> <outputfile>
+  hadoop jar \<jarfile\> \<inputfile\> \<outputfile\>
