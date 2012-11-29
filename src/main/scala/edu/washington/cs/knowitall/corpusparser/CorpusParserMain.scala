@@ -16,14 +16,22 @@ object CorpusParserMain extends ScoobiApp {
     val input = args(0);
     val output = args(1);
 
-    // initialize malt parser
-    // val maltConfig: File =
-    lazy val malt = new MaltParser(new File(getClass().getResource("engmalt.linear-1.7.mco").getFile()))
+    // lazily initialize malt parser
+    lazy val malt = new MaltParser(getClass().getResource("engmalt.linear-1.7.mco"), None)
 
-    val lines = fromTextFile(input);
+    val lines = fromTextFile(input).filter(x => x != "");
 
-    val graphs = lines.map(line => malt.dependencyGraph(line).toString)
-    persist(toTextFile(graphs, output))
+    try {
+      val graphs = lines.map(line => malt.dependencyGraph(line).toString)
+      persist(toTextFile(graphs, output))
+    } catch {
+      case emptyStringE: org.maltparser.core.symbol.SymbolException =>
+        println("Empty string: " + emptyStringE)
+      case e: Exception => 
+        println(e);
+      case _ => println("Some other exception.")
+    }
+
   }
 
   def usage() {
